@@ -10,11 +10,13 @@ public class UnityToNode : MonoBehaviour
 {
     public Button btnGetExample;
     public Button btnPostExample;
+    public Button btnResDataExample;
     public string host;
     public int port;
     public string route;
 
     public string postUrl;
+    public string resUrl;
     public int id;
     public string data;
 
@@ -48,6 +50,23 @@ public class UnityToNode : MonoBehaviour
             }));
 
         });
+
+        btnResDataExample.onClick.AddListener(() =>
+        {
+            var url = string.Format("{0}:{1}/{2}", host, port, resUrl);
+
+            Debug.Log(url);
+            StartCoroutine(GetData(url, (raw) =>
+            {
+                var res = JsonConvert.DeserializeObject<Protocols.Packets.res_data>(raw);
+
+                foreach (var user in res.result)
+                {
+                    Debug.LogFormat("{0} : {1}", user.id, user.data);
+                }
+
+            }));
+        });
     }
     private IEnumerator GetData(string url, System.Action<string> callback)
     {
@@ -77,11 +96,11 @@ public class UnityToNode : MonoBehaviour
 
         yield return webRequest.SendWebRequest();
 
-        if (webRequest.result == UnityWebRequest.Result.ConnectionError 
+        if (webRequest.result == UnityWebRequest.Result.ConnectionError
             || webRequest.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("³×Æ®¿öÅ© È¯°æÀÌ ÁÁÁö ¾Ê¾Æ Åë½Å ºÒ°¡´É");
-       
+            Debug.Log("ë„¤íŠ¸ì›Œí¬ í™˜ê²½ì´ ì¢‹ì§€ ì•Šì•„ í†µì‹  ë¶ˆê°€ëŠ¥");
+
         }
         else
         {

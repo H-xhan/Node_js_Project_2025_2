@@ -18,5 +18,10 @@ public class Protocols
             public int id;
             public string data;
         }
+
+        public class res_data : common
+        {
+            public req_data result;
+        }
     }
 }
