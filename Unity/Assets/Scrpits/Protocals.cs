@@ -21,7 +21,7 @@ public class Protocols
 
         public class res_data : common
         {
-            public req_data result;
+            public req_data[] result;
         }
     }
 }
